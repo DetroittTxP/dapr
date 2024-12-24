@@ -1,0 +1,67 @@
+services:
+    placement:
+        container_name: placement
+        image: daprio/dapr
+        command: ["./placement", "-port", "50006"]
+        depends_on:
+            - redis
+
+    redis:
+        image: redis:alpine
+        ports:
+            - 6379:6379
+        networks:
+            - dapr
+        volumes:
+            - redis-data:/data
+
+    node:
+        container_name: node-app
+        build:
+            context: ./node
+            dockerfile: dockerfile
+        tty: true
+        stdin_open: true
+        restart: on-failure
+        ports:
+            - "7200:7200"
+        volumes:
+            - ./node/source:/node/app
+            - ${USERPROFILE}/.vscode/:/home/node/.vscode-server
+        command: sh -c "npm install && npm start"
+        networks:
+            - dapr
+
+    node-dapr:
+        container_name: node-dapr
+        image: daprio/daprd:edge
+        depends_on:
+            - redis
+            - node
+        restart: on-failure
+        volumes:
+            - ./dapr-components:/components
+        command:
+            [
+                "./daprd",
+                "-app-id",
+                "node",
+                "-app-port",
+                "7200",
+                "-placement-host-address",
+                "placement:50006",
+                "-components-path",
+                "/components",
+                "-dapr-http-port",
+                "3500",
+                "-dapr-grpc-port",
+                "50001",
+            ]
+        network_mode: "service:node"
+
+volumes:
+    redis-data:
+        driver: local
+
+networks:
+    dapr:
