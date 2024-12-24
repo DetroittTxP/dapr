@@ -1,0 +1,23 @@
+@dapr = http://localhost:7200
+
+
+
+
+### [metadata] ###
+GET {{dapr}}/metadata HTTP/1.1
+
+### [metadata] ###
+GET {{dapr}}/metadata HTTP/1.1
+
+
+### save state ###
+POST {{dapr}}/statestore HTTP/1.1
+Content-Type: application/json
+
+{
+    "key": "pond",
+    "value": "beam"
+}
+
+### get state
+GET {{dapr}}/statestore/pond HTTP/1.1
