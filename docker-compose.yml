@@ -29,6 +29,8 @@ services:
             - ./node/source:/node/app
             - ${USERPROFILE}/.vscode/:/home/node/.vscode-server
         command: sh -c "npm install && npm start"
+        env_file:
+            - .env
         networks:
             - dapr
 
