@@ -72,6 +72,7 @@ services:
             - "7400:5000"
         volumes:
             - ./flask/source:/flask/app
+            - ${HOME}/
         env_file:
             - .env
         command: sh -c "flask --app /flask/app/app.py --debug run --host=0.0.0.0"

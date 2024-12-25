@@ -1,5 +1,5 @@
 @dapr = http://localhost:7200
-
+@flask = http://localhost:7400
 
 
 
@@ -9,6 +9,10 @@ GET {{dapr}}/metadata HTTP/1.1
 ### [metadata] ###
 GET {{dapr}}/healthz HTTP/1.1
 
+
+### [flask] ###
+
+GET {{flask}}/metadata HTTP/1.1
 
 ### save state ###
 POST {{dapr}}/statestore HTTP/1.1
