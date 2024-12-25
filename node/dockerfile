@@ -2,6 +2,14 @@ FROM node:18-alpine
 
 WORKDIR /node/app
 
-COPY /source/package*.json /node/app
+RUN npm install -g nodemon && chmod +x $(which nodemon)
 
+COPY ./source/package*.json ./
 
+RUN npm install
+
+COPY ./source ./
+
+RUN chmod +x /node/app
+
+CMD ["npm", "start"]

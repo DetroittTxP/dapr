@@ -7,7 +7,7 @@
 GET {{dapr}}/metadata HTTP/1.1
 
 ### [metadata] ###
-GET {{dapr}}/metadata HTTP/1.1
+GET {{dapr}}/healthz HTTP/1.1
 
 
 ### save state ###
